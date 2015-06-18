@@ -82,7 +82,7 @@ ggmap(usmap) +
              stat = "sum",
              colour = "red")
 
-plot_killed +
+ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
@@ -91,7 +91,7 @@ plot_killed +
                  aes(x = lon, y = lat),
                  bins = 5)
 
-plot_killed +
+ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
@@ -105,7 +105,7 @@ plot_killed +
                bins = 5,
                alpha = 0.2)
 
-plot_killed +
+ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
