@@ -181,7 +181,7 @@ ggmap(usmap) +
 ![](README_files/figure-markdown_github/unnamed-chunk-5-2.png)
 
 ``` r
-plot_killed +
+ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
@@ -194,22 +194,13 @@ plot_killed +
     ## Warning in loop_apply(n, do.ply): Removed 7 rows containing non-finite
     ## values (stat_density2d).
 
-    ## Warning in loop_apply(n, do.ply): Removed 7 rows containing non-finite
-    ## values (stat_density2d).
-
-    ## Warning in loop_apply(n, do.ply): Removed 7 rows containing non-finite
-    ## values (stat_density2d).
-
-    ## Warning in loop_apply(n, do.ply): Removed 3 rows containing missing values
-    ## (geom_point).
-
     ## Warning in loop_apply(n, do.ply): Removed 3 rows containing missing values
     ## (geom_point).
 
 ![](README_files/figure-markdown_github/unnamed-chunk-5-3.png)
 
 ``` r
-plot_killed +
+ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
@@ -230,22 +221,13 @@ plot_killed +
     ## Warning in loop_apply(n, do.ply): Removed 7 rows containing non-finite
     ## values (stat_density2d).
 
-    ## Warning in loop_apply(n, do.ply): Removed 7 rows containing non-finite
-    ## values (stat_density2d).
-
-    ## Warning in loop_apply(n, do.ply): Removed 7 rows containing non-finite
-    ## values (stat_density2d).
-
-    ## Warning in loop_apply(n, do.ply): Removed 3 rows containing missing values
-    ## (geom_point).
-
     ## Warning in loop_apply(n, do.ply): Removed 3 rows containing missing values
     ## (geom_point).
 
 ![](README_files/figure-markdown_github/unnamed-chunk-5-4.png)
 
 ``` r
-plot_killed +
+ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
@@ -273,24 +255,6 @@ plot_killed +
 
     ## Warning in loop_apply(n, do.ply): Removed 2 rows containing non-finite
     ## values (stat_density2d).
-
-    ## Warning in loop_apply(n, do.ply): Removed 5 rows containing non-finite
-    ## values (stat_density2d).
-
-    ## Warning in loop_apply(n, do.ply): Removed 2 rows containing non-finite
-    ## values (stat_density2d).
-
-    ## Warning in loop_apply(n, do.ply): Removed 5 rows containing non-finite
-    ## values (stat_density2d).
-
-    ## Warning in loop_apply(n, do.ply): Removed 2 rows containing non-finite
-    ## values (stat_density2d).
-
-    ## Warning in loop_apply(n, do.ply): Removed 3 rows containing missing values
-    ## (geom_point).
-
-    ## Warning in loop_apply(n, do.ply): Removed 2 rows containing missing values
-    ## (geom_point).
 
     ## Warning in loop_apply(n, do.ply): Removed 3 rows containing missing values
     ## (geom_point).
