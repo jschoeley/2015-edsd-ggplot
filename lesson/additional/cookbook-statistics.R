@@ -6,6 +6,7 @@
 #' output:
 #'   md_document:
 #'     variant: markdown_github
+#'     preserve_yaml: TRUE
 #' ---
 
 #' This document is supposed to give you some starting points for using
