@@ -31,7 +31,7 @@ ggplot(cars, aes(x = speed, y = dist)) +
   geom_smooth(span = 0.3) +
   geom_smooth(span = 10, colour = "red")
 
-#' We can change the method of smoothin to "linear model".
+#' We can change the method of smoothing to "linear model".
 ggplot(cars, aes(x = speed, y = dist)) +
   geom_point() +
   geom_smooth(method = "lm")
