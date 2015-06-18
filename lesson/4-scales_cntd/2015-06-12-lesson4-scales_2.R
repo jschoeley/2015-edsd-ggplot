@@ -15,7 +15,7 @@ library(dplyr)   # for general data transformation
 
 #'## Sequential Colour Scale: Plotting Magnitudes
 
-#' Danish and Swedish Female Period Death and Population Counts.
+#' Danish and Swedish female period death and population counts.
 #' Taken from the Human Mortality Database.
 load(file = "../../data/dnk_swe_fem_hmd.Rdata")
 
@@ -64,7 +64,7 @@ ggplot(diffmort) +
     midpoint = 1)
 
 #' We face the problem that our colour scale is not symmetric on a
-#' multaplicative level (where half and double are equally distanced from 1). We
+#' multiplicative level (where half and double are equally distanced from 1). We
 #' can fix that with a logarithmic scale transformation. Not that we have to
 #' reset the midpoint when we use a log-transform on our colour scale (log2(1) =
 #' 0).
