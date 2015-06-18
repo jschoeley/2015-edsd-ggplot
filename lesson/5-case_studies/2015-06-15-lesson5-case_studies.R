@@ -21,7 +21,7 @@ library(lubridate) # working with dates
 #' their Geiger counter readings via webcam to the internet. This dataset
 #' contains readings from some of these web-streams over time. Note that these
 #' are not official readings but readings provided by private individuals.
-fukushima <- read.csv("../..data/fukushima.csv",
+fukushima <- read.csv("../../data/fukushima.csv",
                       skip = 8, stringsAsFactors = FALSE)
 
 head(fukushima)
@@ -47,11 +47,11 @@ ggplot(fukushima, aes(x = Time, y = Value, group = Source, colour = Source)) +
 
 #' Source: <http://www.theguardian.com/thecounted>
 
-counted <- read.csv("./data/the_counted.csv",
+counted <- read.csv("../../data/the_counted.csv",
                     na.strings = "Unknown",
                     stringsAsFactors = FALSE)
 
-uspop <- read.csv("./data/uspop_2014.csv",
+uspop <- read.csv("../../data/uspop_2014.csv",
                   skip = 8, stringsAsFactors = FALSE)
 
 RecodeArmed <- function (x) {
@@ -66,19 +66,58 @@ counted %>%
          armed_simple = RecodeArmed(armed),
          time = paste(month, day, year),
          time = parse_date_time(time, orders = "%B %d! %Y!")) %>%
-  bind_cols(., geocode(.$citystate)) %>%
+  bind_cols(., geocode(.$citystate, messaging = FALSE)) %>%
   inner_join(., uspop, by = c("state" = "Short")) -> killed
 
 usmap <- get_map(location = c(-130, 20, -60, 50), maptype = "toner")
+
+ggmap(usmap) +
+  geom_point(data = killed,
+             aes(x = lon, y = lat),
+             colour = "red")
+
 ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
-             colour = "red", stat = "sum") +
-  geom_density2d(data =  killed,
-                 aes(x = lon, y = lat), bins = 5) +
+             stat = "sum",
+             colour = "red")
+
+plot_killed +
+  geom_point(data = killed,
+             aes(x = lon, y = lat, size = ..n..),
+             stat = "sum",
+             colour = "red") +
+  geom_density2d(data = killed,
+                 aes(x = lon, y = lat),
+                 bins = 5)
+
+plot_killed +
+  geom_point(data = killed,
+             aes(x = lon, y = lat, size = ..n..),
+             stat = "sum",
+             colour = "red") +
+  geom_density2d(data = killed,
+                 aes(x = lon, y = lat),
+                 bins = 5) +
   geom_polygon(data = killed,
                aes(x = lon, y = lat, fill = ..level..),
-               stat = "density2d", bins = 5, alpha = 0.2) +
+               stat = "density2d",
+               bins = 5,
+               alpha = 0.2)
+
+plot_killed +
+  geom_point(data = killed,
+             aes(x = lon, y = lat, size = ..n..),
+             stat = "sum",
+             colour = "red") +
+  geom_density2d(data = killed,
+                 aes(x = lon, y = lat),
+                 bins = 5) +
+  geom_polygon(data = killed,
+               aes(x = lon, y = lat, fill = ..level..),
+               stat = "density2d",
+               bins = 5,
+               alpha = 0.2) +
   facet_wrap(~ armed_simple) +
   guides(fill = FALSE, size = FALSE)
 
