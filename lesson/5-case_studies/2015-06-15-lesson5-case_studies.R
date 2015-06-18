@@ -45,7 +45,7 @@ ggplot(fukushima, aes(x = Time, y = Value, group = Source, colour = Source)) +
 
 #'## Guardian: The Counted
 
-#' http://www.theguardian.com/us-news/ng-interactive/2015/jun/01/the-counted-police-killings-us-database#
+#' Source: <http://www.theguardian.com/thecounted>
 
 counted <- read.csv("./data/the_counted.csv",
                     na.strings = "Unknown",
