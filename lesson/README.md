@@ -1,1 +1,1 @@
-Here you find the annotated code we programmed during the lectures. I added some additional examples.
+Here you find the annotated code we wrote during the lectures. I added some additional examples.
