@@ -19,7 +19,6 @@ library(dplyr)   # for general data transformation
 #' it immediately appears as an object in our workspace. In contrast to other
 #' data sources (e.g. csv, dat) there is no need to assign it to an object
 #' first.
-
 load("../../data/name.Rdata")
 head(name)
 
@@ -37,7 +36,6 @@ ggplot(name) +
 head(WorldPhones)
 
 #' We use `dplyr` and `tidyr` to reshape our data.
-
 WorldPhones %>%
   # Convert to data frame.
   as.data.frame %>%
