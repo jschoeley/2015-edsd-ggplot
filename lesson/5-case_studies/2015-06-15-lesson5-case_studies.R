@@ -62,7 +62,8 @@ counted %>%
   bind_cols(., geocode(.$citystate, messaging = FALSE)) -> killed
 
 #' Download a map of the US along with geographical coordinates.
-usmap <- get_map(location = c(-130, 20, -60, 50), maptype = "toner")
+usmap <- get_map(location = c(-130, 20, -60, 50), maptype = "toner",
+                 messaging = FALSE)
 
 ggmap(usmap) +
   geom_point(data = killed,
