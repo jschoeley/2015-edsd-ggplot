@@ -45,30 +45,23 @@ ggplot(fukushima, aes(x = Time, y = Value, group = Source, colour = Source)) +
 
 #'## Guardian: The Counted
 
+#' The british newspaper "The Guardian" assembled a database of people killed
+#' by police in the US in 2015.
 #' Source: <http://www.theguardian.com/thecounted>
 
+#' Read the data. Note that the strings should not be automatically converted
+#' to factor variables.
 counted <- read.csv("../../data/the_counted.csv",
                     na.strings = "Unknown",
                     stringsAsFactors = FALSE)
 
-uspop <- read.csv("../../data/uspop_2014.csv",
-                  skip = 8, stringsAsFactors = FALSE)
-
-RecodeArmed <- function (x) {
-  x <- ifelse(x == "Disputed", NA, x)
-  x <- ifelse(x == "Firearm", "Yes - Firearm", x)
-  x <- ifelse(x != "No" & x != "Yes - Firearm", "Yes - Other", x)
-  x
-}
-
+#' Use Google Maps API to get latitude and longitude for each of the places
+#' in the dataset.
 counted %>%
-  mutate(citystate = paste(city, state),
-         armed_simple = RecodeArmed(armed),
-         time = paste(month, day, year),
-         time = parse_date_time(time, orders = "%B %d! %Y!")) %>%
-  bind_cols(., geocode(.$citystate, messaging = FALSE)) %>%
-  inner_join(., uspop, by = c("state" = "Short")) -> killed
+  mutate(citystate = paste(city, state)) %>%
+  bind_cols(., geocode(.$citystate, messaging = FALSE)) -> killed
 
+#' Download a map of the US along with geographical coordinates.
 usmap <- get_map(location = c(-130, 20, -60, 50), maptype = "toner")
 
 ggmap(usmap) +
@@ -80,13 +73,13 @@ ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
-             colour = "red")
+             colour = "red", alpha = 0.7)
 
 ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
-             colour = "red") +
+             colour = "red", alpha = 0.7) +
   geom_density2d(data = killed,
                  aes(x = lon, y = lat),
                  bins = 5)
@@ -95,7 +88,7 @@ ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
-             colour = "red") +
+             colour = "red", alpha = 0.7) +
   geom_density2d(data = killed,
                  aes(x = lon, y = lat),
                  bins = 5) +
@@ -105,11 +98,21 @@ ggmap(usmap) +
                bins = 5,
                alpha = 0.2)
 
+RecodeArmed <- function (x) {
+  x <- ifelse(x == "Disputed", NA, x)
+  x <- ifelse(x == "Firearm", "Yes - Firearm", x)
+  x <- ifelse(x != "No" & x != "Yes - Firearm", "Yes - Other", x)
+  x
+}
+
+killed %>%
+  mutate(armed_simple = RecodeArmed(armed)) -> killed
+
 ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
-             colour = "red") +
+             colour = "red", alpha = 0.7) +
   geom_density2d(data = killed,
                  aes(x = lon, y = lat),
                  bins = 5) +
@@ -121,7 +124,11 @@ ggmap(usmap) +
   facet_wrap(~ armed_simple) +
   guides(fill = FALSE, size = FALSE)
 
+uspop <- read.csv("../../data/uspop_2014.csv",
+                  skip = 8, stringsAsFactors = FALSE)
+
 killed %>%
+  inner_join(., uspop, by = c("state" = "Short")) %>%
   group_by(State, armed_simple) %>%
   summarise(deaths = n(),
             population = unique(Population)) %>%
@@ -132,7 +139,7 @@ killed %>%
 
 us_states_border <- map_data("state")
 
-left_join(x = us_states_border, y = killed_aggr,
+left_join(us_states_border, killed_aggr,
           by = c("region" = "state")) -> killed_aggr_map
 
 ggmap(usmap) +

@@ -65,31 +65,27 @@ ggplot(fukushima, aes(x = Time, y = Value, group = Source, colour = Source)) +
 Guardian: The Counted
 ---------------------
 
-Source: <http://www.theguardian.com/thecounted>
+The british newspaper "The Guardian" assembled a database of people killed by police in the US in 2015. Source: <http://www.theguardian.com/thecounted> Read the data. Note that the strings should not be automatically converted to factor variables.
 
 ``` r
 counted <- read.csv("../../data/the_counted.csv",
                     na.strings = "Unknown",
                     stringsAsFactors = FALSE)
+```
 
-uspop <- read.csv("../../data/uspop_2014.csv",
-                  skip = 8, stringsAsFactors = FALSE)
+Use Google Maps API to get latitude and longitude for each of the places in the dataset.
 
-RecodeArmed <- function (x) {
-  x <- ifelse(x == "Disputed", NA, x)
-  x <- ifelse(x == "Firearm", "Yes - Firearm", x)
-  x <- ifelse(x != "No" & x != "Yes - Firearm", "Yes - Other", x)
-  x
-}
-
+``` r
 counted %>%
-  mutate(citystate = paste(city, state),
-         armed_simple = RecodeArmed(armed),
-         time = paste(month, day, year),
-         time = parse_date_time(time, orders = "%B %d! %Y!")) %>%
-  bind_cols(., geocode(.$citystate, messaging = FALSE)) %>%
-  inner_join(., uspop, by = c("state" = "Short")) -> killed
+  mutate(citystate = paste(city, state)) %>%
+  bind_cols(., geocode(.$citystate, messaging = FALSE)) -> killed
+```
 
+    ## Warning: geocode failed with status ZERO_RESULTS, location = "Weymouth MA"
+
+Download a map of the US along with geographical coordinates.
+
+``` r
 usmap <- get_map(location = c(-130, 20, -60, 50), maptype = "toner")
 ```
 
@@ -162,49 +158,49 @@ ggmap(usmap) +
              colour = "red")
 ```
 
-    ## Warning in loop_apply(n, do.ply): Removed 7 rows containing missing values
+    ## Warning in loop_apply(n, do.ply): Removed 8 rows containing missing values
     ## (geom_point).
 
-![](README_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 ``` r
 ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
-             colour = "red")
+             colour = "red", alpha = 0.7)
 ```
 
     ## Warning in loop_apply(n, do.ply): Removed 3 rows containing missing values
     ## (geom_point).
 
-![](README_files/figure-markdown_github/unnamed-chunk-5-2.png)
+![](README_files/figure-markdown_github/unnamed-chunk-7-2.png)
 
 ``` r
 ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
-             colour = "red") +
+             colour = "red", alpha = 0.7) +
   geom_density2d(data = killed,
                  aes(x = lon, y = lat),
                  bins = 5)
 ```
 
-    ## Warning in loop_apply(n, do.ply): Removed 7 rows containing non-finite
+    ## Warning in loop_apply(n, do.ply): Removed 8 rows containing non-finite
     ## values (stat_density2d).
 
     ## Warning in loop_apply(n, do.ply): Removed 3 rows containing missing values
     ## (geom_point).
 
-![](README_files/figure-markdown_github/unnamed-chunk-5-3.png)
+![](README_files/figure-markdown_github/unnamed-chunk-7-3.png)
 
 ``` r
 ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
-             colour = "red") +
+             colour = "red", alpha = 0.7) +
   geom_density2d(data = killed,
                  aes(x = lon, y = lat),
                  bins = 5) +
@@ -215,23 +211,33 @@ ggmap(usmap) +
                alpha = 0.2)
 ```
 
-    ## Warning in loop_apply(n, do.ply): Removed 7 rows containing non-finite
+    ## Warning in loop_apply(n, do.ply): Removed 8 rows containing non-finite
     ## values (stat_density2d).
 
-    ## Warning in loop_apply(n, do.ply): Removed 7 rows containing non-finite
+    ## Warning in loop_apply(n, do.ply): Removed 8 rows containing non-finite
     ## values (stat_density2d).
 
     ## Warning in loop_apply(n, do.ply): Removed 3 rows containing missing values
     ## (geom_point).
 
-![](README_files/figure-markdown_github/unnamed-chunk-5-4.png)
+![](README_files/figure-markdown_github/unnamed-chunk-7-4.png)
 
 ``` r
+RecodeArmed <- function (x) {
+  x <- ifelse(x == "Disputed", NA, x)
+  x <- ifelse(x == "Firearm", "Yes - Firearm", x)
+  x <- ifelse(x != "No" & x != "Yes - Firearm", "Yes - Other", x)
+  x
+}
+
+killed %>%
+  mutate(armed_simple = RecodeArmed(armed)) -> killed
+
 ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
              stat = "sum",
-             colour = "red") +
+             colour = "red", alpha = 0.7) +
   geom_density2d(data = killed,
                  aes(x = lon, y = lat),
                  bins = 5) +
@@ -250,10 +256,16 @@ ggmap(usmap) +
     ## Warning in loop_apply(n, do.ply): Removed 2 rows containing non-finite
     ## values (stat_density2d).
 
+    ## Warning in loop_apply(n, do.ply): Removed 1 rows containing non-finite
+    ## values (stat_density2d).
+
     ## Warning in loop_apply(n, do.ply): Removed 5 rows containing non-finite
     ## values (stat_density2d).
 
     ## Warning in loop_apply(n, do.ply): Removed 2 rows containing non-finite
+    ## values (stat_density2d).
+
+    ## Warning in loop_apply(n, do.ply): Removed 1 rows containing non-finite
     ## values (stat_density2d).
 
     ## Warning in loop_apply(n, do.ply): Removed 3 rows containing missing values
@@ -262,10 +274,17 @@ ggmap(usmap) +
     ## Warning in loop_apply(n, do.ply): Removed 2 rows containing missing values
     ## (geom_point).
 
-![](README_files/figure-markdown_github/unnamed-chunk-5-5.png)
+    ## Warning in loop_apply(n, do.ply): Removed 1 rows containing missing values
+    ## (geom_point).
+
+![](README_files/figure-markdown_github/unnamed-chunk-7-5.png)
 
 ``` r
+uspop <- read.csv("../../data/uspop_2014.csv",
+                  skip = 8, stringsAsFactors = FALSE)
+
 killed %>%
+  inner_join(., uspop, by = c("state" = "Short")) %>%
   group_by(State, armed_simple) %>%
   summarise(deaths = n(),
             population = unique(Population)) %>%
@@ -276,7 +295,7 @@ killed %>%
 
 us_states_border <- map_data("state")
 
-left_join(x = us_states_border, y = killed_aggr,
+left_join(us_states_border, killed_aggr,
           by = c("region" = "state")) -> killed_aggr_map
 
 ggmap(usmap) +
@@ -300,4 +319,7 @@ ggmap(usmap) +
     ## Warning in loop_apply(n, do.ply): Removed 2 rows containing missing values
     ## (geom_point).
 
-![](README_files/figure-markdown_github/unnamed-chunk-5-6.png)
+    ## Warning in loop_apply(n, do.ply): Removed 1 rows containing missing values
+    ## (geom_point).
+
+![](README_files/figure-markdown_github/unnamed-chunk-7-6.png)
