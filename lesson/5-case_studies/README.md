@@ -86,7 +86,8 @@ counted %>%
 Download a map of the US along with geographical coordinates.
 
 ``` r
-usmap <- get_map(location = c(-130, 20, -60, 50), maptype = "toner")
+usmap <- get_map(location = c(-130, 20, -60, 50), maptype = "toner",
+                 messaging = FALSE)
 ```
 
     ## maptype = "toner" is only available with source = "stamen".
