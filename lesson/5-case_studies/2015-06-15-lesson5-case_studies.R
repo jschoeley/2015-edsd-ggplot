@@ -9,6 +9,9 @@
 #'     preserve_yaml: TRUE
 #' ---
 
+#+ setup, include=FALSE
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+
 library(ggplot2)   # our plotting package
 library(tidyr)     # for reshaping between wide and long format
 library(dplyr)     # for general data transformation
