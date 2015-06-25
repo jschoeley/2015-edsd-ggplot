@@ -104,7 +104,7 @@ ggmap(usmap) +
                  aes(x = lon, y = lat),
                  bins = 5)
 
-# ...and shade them according to level.
+#' ...and shade them according to level.
 ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),

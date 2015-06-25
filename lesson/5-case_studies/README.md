@@ -141,8 +141,9 @@ ggmap(usmap) +
 
 ![](README_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
+...and shade them according to level.
+
 ``` r
-# ...and shade them according to level.
 ggmap(usmap) +
   geom_point(data = killed,
              aes(x = lon, y = lat, size = ..n..),
@@ -158,7 +159,7 @@ ggmap(usmap) +
                alpha = 0.2)
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-9-2.png)
+![](README_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 For further analysis we recode the `armed` variable into 4 categories: NA, No, Yes - Firearm, Yes - Other. This is a small function doing just that.
 
@@ -194,7 +195,7 @@ ggmap(usmap) +
   guides(fill = FALSE, size = FALSE)
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
 The problem with these density maps is that they don't adjust for different populations sizes in the different regions and therefore just show the geographical population-distribution in the United States. A strategy to show the number of killed standardized by population size is to calculate population-specific event-proportions and show the result as a shaded map region. In order to do this we need the US population by state and geographic information about the borders of the US state (a shapefile). This is a dataset of the 2014 US population by state.
 
@@ -272,4 +273,4 @@ ggmap(usmap) +
   scale_size(name = "Cases of\nPeople Killed", range = c(2, 10))
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-16-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-17-1.png)
