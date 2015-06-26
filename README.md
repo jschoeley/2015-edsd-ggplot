@@ -17,8 +17,13 @@ III. Scales I
 
   - knowing your data, knowing your scales
   - each aesthetic has it's scale
-  - scale transformations
-  - manual labelling of scales
+  - changing scale attributes:
+      - name
+      - arithmetic transformation
+      - limits
+      - breaks
+      - labels
+      - ...
 
 IV. Scales II
 
@@ -28,4 +33,4 @@ IV. Scales II
 
 V. Multivariate Visualization
 
-  - we apply all of `gplot` to analyse a more complex dataset
+  - we apply all of `ggplot` to analyse a more complex dataset
